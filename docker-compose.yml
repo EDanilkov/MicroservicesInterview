@@ -1,0 +1,33 @@
+services:
+  product:
+    container_name: product-container
+    image: ${DOCKER_REGISTRY-}product
+    build:
+      context: .
+      dockerfile: Services/Product/Product.API/Dockerfile
+    ports:
+      - "8083:80"
+    depends_on:
+      - db
+    restart: always
+
+  user:
+    container_name: user-container
+    image: ${DOCKER_REGISTRY-}product
+    build:
+      context: .
+      dockerfile: Services/User/User.API/Dockerfile
+    ports:
+      - "8084:80"
+    depends_on:
+      - db
+    restart: always
+    
+  db:
+    container_name: db-container
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1401:1433"
+    environment:
+      SA_PASSWORD: "Super_password"
+      ACCEPT_EULA: "Y"
