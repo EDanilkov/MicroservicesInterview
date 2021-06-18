@@ -1,4 +1,4 @@
-﻿using Product.Model;
+﻿using Product.Model.ResponseModels;
 using System;
 using System.Threading.Tasks;
 

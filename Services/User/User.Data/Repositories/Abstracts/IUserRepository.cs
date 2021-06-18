@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using User.Model;
+using User.Model.RequestModels;
 
 namespace User.Data.Repositories.Abstracts
 {
     public interface IUserRepository
     {
-        Task<UserModel> GetUserByUserIdAsync(Guid userId);
+        Task<Models.User> GetUserByUserIdAsync(Guid userId);
 
-        Task<UserModel> CreateUserAsync(string userName);
+        Task<Models.User> CreateUserAsync(AddUserModel addUserModel);
     }
 }

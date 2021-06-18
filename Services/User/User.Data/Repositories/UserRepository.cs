@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using User.Data.Context;
 using User.Data.Repositories.Abstracts;
-using User.Model;
+using User.Model.RequestModels;
 
 namespace User.Data.Repositories
 {
@@ -16,21 +16,22 @@ namespace User.Data.Repositories
             _userContext = userContext;
         }
 
-        public async Task<UserModel> GetUserByUserIdAsync(Guid userId)
+        public async Task<Models.User> GetUserByUserIdAsync(Guid userId)
         {
             return await _userContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
         }
 
-        public async Task<UserModel> CreateUserAsync(string userName)
+        public async Task<Models.User> CreateUserAsync(AddUserModel addUserModel)
         {
-            var userDto = new UserModel()
+            var user = new Models.User()
             {
-                Name = userName,
-                CreationDate = new DateTime()
+                Name = addUserModel.Name,
+                Surname = addUserModel.Surname,
+                CreationDate = DateTime.Now
             };
-            var newUser = await _userContext.Users.AddAsync(userDto);
+            await _userContext.Users.AddAsync(user);
             await _userContext.SaveChangesAsync();
-            return newUser.Entity;
+            return user;
         }
     }
 }

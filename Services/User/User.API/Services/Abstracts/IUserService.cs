@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using User.Model;
+using User.Model.RequestModels;
+using User.Model.ResponseModels;
 
 namespace User.API.Services.Abstracts
 {
@@ -10,6 +9,6 @@ namespace User.API.Services.Abstracts
     {
         Task<UserModel> GetUserByUserIdAsync(Guid userId);
 
-        Task<UserModel> CreateUserAsync(string userName);
+        Task<UserModel> CreateUserAsync(AddUserModel addUserModel);
     }
 }

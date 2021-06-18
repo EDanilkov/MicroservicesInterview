@@ -1,6 +1,7 @@
-﻿using Product.API.Services.Abstracts;
+﻿using AutoMapper;
+using Product.API.Services.Abstracts;
 using Product.Data.Repositories.Abstracts;
-using Product.Model;
+using Product.Model.ResponseModels;
 using System;
 using System.Threading.Tasks;
 
@@ -9,15 +10,19 @@ namespace Product.API.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
 
         public async Task<ProductModel> GetProductByProductIdAsync(Guid productId)
         {
-            return await _productRepository.GetProductByProductIdAsync(productId);
+            var result = await _productRepository.GetProductByProductIdAsync(productId);
+
+            return _mapper.Map<ProductModel>(result);
         }
 
         /// <summary>
@@ -26,7 +31,9 @@ namespace Product.API.Services
         /// <returns></returns>
         public async Task<ProductModel> AddProductAsync(string productName)
         {
-            return await _productRepository.AddProductAsync(productName);
+            var result = await _productRepository.AddProductAsync(productName);
+
+            return _mapper.Map<ProductModel>(result);
         }
     }
 }

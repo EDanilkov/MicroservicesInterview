@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using User.Model;
 
 namespace User.Data.Context
 {
     public class UserContext : DbContext
     {
-        public DbSet<UserModel> Users { get; set; }
+        public DbSet<Models.User> Users { get; set; }
 
-        public UserContext(DbContextOptions<UserContext> options): base(options) { }
+        public UserContext(DbContextOptions<UserContext> options): base(options)
+        {
+            Database.EnsureCreated();
+        }
     }
 }

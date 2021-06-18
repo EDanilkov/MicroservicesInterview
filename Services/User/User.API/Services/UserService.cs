@@ -1,30 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
+using System;
 using System.Threading.Tasks;
 using User.API.Services.Abstracts;
 using User.Data.Repositories.Abstracts;
-using User.Model;
+using User.Model.RequestModels;
+using User.Model.ResponseModels;
 
 namespace User.API.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserModel> GetUserByUserIdAsync(Guid userId)
         {
-            return await _userRepository.GetUserByUserIdAsync(userId);
+            var result = await _userRepository.GetUserByUserIdAsync(userId);
+
+            return _mapper.Map<UserModel>(result);
         }
 
-        public async Task<UserModel> CreateUserAsync(string userName)
+        public async Task<UserModel> CreateUserAsync(AddUserModel addUserModel)
         {
-            return await _userRepository.CreateUserAsync(userName);
+            var result = await _userRepository.CreateUserAsync(addUserModel);
+
+            return _mapper.Map<UserModel>(result);
         }
     }
 }

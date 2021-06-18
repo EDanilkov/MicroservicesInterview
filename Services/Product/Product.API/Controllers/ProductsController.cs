@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Product.API.Services.Abstracts;
-using Product.Model;
+using Product.Model.ResponseModels;
 using System;
 using System.Threading.Tasks;
 
 namespace Product.API.Controllers
 {
     [ApiController]
-    [Route("api/products")]
+    [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -18,16 +17,11 @@ namespace Product.API.Controllers
             _productService = productService;
         }
 
-        public async Task<IActionResult> GetProductByProductIdAsync()
-        {
-            return Ok(1);
-        }
-
         /// <summary>
         /// Get a product by productId
         /// </summary>
         /// <returns>Returns a product model object</returns>
-        [HttpGet("productId:int")]
+        [HttpGet("{productId}")]
         [ProducesResponseType(typeof(ProductModel), 200)] //Success
         [ProducesResponseType(400)] //Bad Request
         [ProducesResponseType(404)] //Not Found
@@ -43,15 +37,15 @@ namespace Product.API.Controllers
         /// Create a product with Name = name
         /// </summary>
         /// <returns></returns>
-        [HttpPost("name:string")]
+        [HttpPost("{productName}")]
         [ProducesResponseType(typeof(ProductModel), 200)] //Success
         [ProducesResponseType(400)] //Bad Request
         [ProducesResponseType(500)] //Internal Server Error
         public async Task<IActionResult> AddProductAsync(string productName)
         {
-            await _productService.AddProductAsync(productName);
+            var result = await _productService.AddProductAsync(productName);
             
-            return Ok();
+            return Created("", result);
         }
     }
 }

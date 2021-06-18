@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using User.API.Services.Abstracts;
-using User.Model;
+using User.Model.RequestModels;
+using User.Model.ResponseModels;
 
 namespace User.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
-    {
-
-        private readonly ILogger<UsersController> _logger;
+    {   
         private readonly IUserService _userService;
 
-        public UsersController(ILogger<UsersController> logger, IUserService userService)
+        public UsersController(IUserService userService)
         {
-            _logger = logger;
             _userService = userService;
         }
 
@@ -28,7 +22,7 @@ namespace User.API.Controllers
         /// Get a user by userId
         /// </summary>
         /// <returns>Returns a user model object</returns>
-        [HttpGet]
+        [HttpGet("{userId}")]
         [ProducesResponseType(typeof(UserModel), 200)] //Success
         [ProducesResponseType(400)] //Bad Request
         [ProducesResponseType(404)] //Not Found
@@ -40,19 +34,16 @@ namespace User.API.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// insert a user with Username = userName
-        /// </summary>
-        /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(UserModel), 200)] //Success
+        [ProducesResponseType(typeof(UserModel), 201)] //Success
         [ProducesResponseType(400)] //Bad Request
+        [ProducesResponseType(404)] //Not Found
         [ProducesResponseType(500)] //Internal Server Error
-        public async Task<IActionResult> CreateUserAsync(string userName)
+        public async Task<IActionResult> CreateUserAsync([FromBody]AddUserModel addUserModel)
         {
-            await _userService.CreateUserAsync(userName);
+            var result = await _userService.CreateUserAsync(addUserModel);
 
-            return Ok();
+            return Created("", result);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Product.Data.Context;
 using Product.Data.Repositories.Abstracts;
-using Product.Model;
 using System;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace Product.Data.Repositories
         /// Get a product with ProductId
         /// </summary>
         /// <returns></returns>
-        public async Task<ProductModel> GetProductByProductIdAsync(Guid productId)
+        public async Task<Models.Product> GetProductByProductIdAsync(Guid productId)
         {
             return await _productContext.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
         }
@@ -29,16 +28,17 @@ namespace Product.Data.Repositories
         /// Create a product with Name = name
         /// </summary>
         /// <returns></returns>
-        public async Task<ProductModel> AddProductAsync(string productName)
+        public async Task<Models.Product> AddProductAsync(string productName)
         {
-            var productDto = new ProductModel()
+            var product = new Models.Product()
             {
                 Name = productName,
-                CreationDate = new DateTime()
+                CreationDate = DateTime.Now
             };
-            var newProduct = await _productContext.Products.AddAsync(productDto);
+            await _productContext.Products.AddAsync(product);
             await _productContext.SaveChangesAsync();
-            return newProduct.Entity;
+
+            return product;
         }
     }
 }

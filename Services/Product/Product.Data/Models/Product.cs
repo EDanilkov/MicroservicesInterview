@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace User.Model
+namespace Product.Data.Models
 {
-    public class UserModel
+    public class Product
     {
+        [Key]
         [Required]
-        public Guid UserId { get; set; }
+        public Guid ProductId { get; set; }
 
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        public string Surname { get; set; }
 
         public DateTime CreationDate { get; set; }
     }
