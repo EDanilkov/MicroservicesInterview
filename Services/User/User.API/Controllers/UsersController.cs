@@ -43,7 +43,7 @@ namespace User.API.Controllers
         {
             var result = await _userService.CreateUserAsync(addUserModel);
 
-            return Created("", result);
+            return Ok(result);
         }
     }
 }

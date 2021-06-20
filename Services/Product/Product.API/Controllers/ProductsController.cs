@@ -45,7 +45,7 @@ namespace Product.API.Controllers
         {
             var result = await _productService.AddProductAsync(productName);
             
-            return Created("", result);
+            return Ok(result);
         }
     }
 }
