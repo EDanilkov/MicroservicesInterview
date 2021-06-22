@@ -133,3 +133,5 @@ $RECYCLE.BIN/
 _NCrunch*
 /.vs/APITest/config/applicationhost.config
 /.vs/APITest/DesignTimeBuild/.dtbcache.v2
+/.vs/APITest/v16/TestStore/0/001.testlog
+/.vs/APITest/v16/TestStore/0/testlog.manifest

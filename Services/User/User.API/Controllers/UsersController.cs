@@ -29,9 +29,20 @@ namespace User.API.Controllers
         [ProducesResponseType(500)] //Internal Server Error
         public async Task<IActionResult> GetUserByUserIdAsync(Guid userId)
         {
-            var result = await _userService.GetUserByUserIdAsync(userId);
+            try
+            {
+                var result = await _userService.GetUserByUserIdAsync(userId);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -41,9 +52,20 @@ namespace User.API.Controllers
         [ProducesResponseType(500)] //Internal Server Error
         public async Task<IActionResult> CreateUserAsync([FromBody]AddUserModel addUserModel)
         {
-            var result = await _userService.CreateUserAsync(addUserModel);
+            try
+            {
+                var result = await _userService.CreateUserAsync(addUserModel);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch(ArgumentNullException ex)
+            {
+                return BadRequest();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

@@ -24,11 +24,21 @@ namespace User.API.Services
         {
             var result = await _userRepository.GetUserByUserIdAsync(userId);
 
+            if (result == null) 
+            {
+                throw new ArgumentException($"Not found user with userId: {userId}");
+            }
+
             return _mapper.Map<UserModel>(result);
         }
 
         public async Task<UserModel> CreateUserAsync(AddUserModel addUserModel)
         {
+            if (addUserModel == null)
+            {
+                throw new ArgumentNullException(nameof(addUserModel));
+            }
+
             var result = await _userRepository.CreateUserAsync(addUserModel);
 
             return _mapper.Map<UserModel>(result);
